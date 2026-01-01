@@ -14,6 +14,7 @@
                 void fill();
                 void update(World* world);
                 void draw_to(GLFWwindow* window, glm::mat4* camera_view, World* world);
+                bool is_mine(glm::vec3 block_pos);
                 glm::vec2 get_position();
                 BlockType get_block(glm::vec3 position);
             private:

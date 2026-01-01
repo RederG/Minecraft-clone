@@ -39,6 +39,6 @@ namespace Minecraft{
 
         if(chunck_target != nullptr)
             return chunck_target->get_block(position);
-        return BlockType::Air;
+        return BlockType::Nothing;
     }
 };

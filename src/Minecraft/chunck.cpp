@@ -40,17 +40,24 @@ namespace Minecraft{
                         this->position.y * this->size.y + y,
                     };
 
-                    if(world->get_block({block_pos.x - 1, block_pos.y, block_pos.z}) != BlockType::Air)
+                    BlockType left = world->get_block({block_pos.x - 1, block_pos.y, block_pos.z});
+                    BlockType right = world->get_block({block_pos.x + 1, block_pos.y, block_pos.z});
+                    BlockType down = world->get_block({block_pos.x, block_pos.y - 1, block_pos.z});
+                    BlockType up = world->get_block({block_pos.x, block_pos.y + 1, block_pos.z});
+                    BlockType back = world->get_block({block_pos.x, block_pos.y, block_pos.z - 1});
+                    BlockType front = world->get_block({block_pos.x, block_pos.y, block_pos.z + 1});
+
+                    if(left !=  BlockType::Air  &&      left !=     BlockType::Nothing)
                         this->all_drawable_faces[i].left = false;
-                    if(world->get_block({block_pos.x + 1, block_pos.y, block_pos.z}) != BlockType::Air)
+                    if(right != BlockType::Air  &&      right !=    BlockType::Nothing)
                         this->all_drawable_faces[i].right = false;
-                    if(world->get_block({block_pos.x, block_pos.y - 1, block_pos.z}) != BlockType::Air)
+                    if(down !=  BlockType::Air  &&      down !=     BlockType::Nothing)
                         this->all_drawable_faces[i].down = false;
-                    if(world->get_block({block_pos.x, block_pos.y + 1, block_pos.z}) != BlockType::Air)
+                    if(up !=    BlockType::Air  &&      up !=       BlockType::Nothing)
                         this->all_drawable_faces[i].up = false;
-                    if(world->get_block({block_pos.x, block_pos.y, block_pos.z - 1}) != BlockType::Air)
+                    if(back !=  BlockType::Air  &&      back !=     BlockType::Nothing)
                         this->all_drawable_faces[i].back = false;
-                    if(world->get_block({block_pos.x, block_pos.y, block_pos.z + 1}) != BlockType::Air)
+                    if(front != BlockType::Air  &&      front !=    BlockType::Nothing)
                         this->all_drawable_faces[i].front = false;
                     i++;
                 }
@@ -77,11 +84,33 @@ namespace Minecraft{
         }
     }
 
+    bool Chunck::is_mine(glm::vec3 position){
+        glm::vec3 start_pos = {
+            this->position.x * this->size.x,
+            this->size.z,
+            this->position.y * this->size.y
+        };
+
+        glm::vec3 end_pos = {
+            this->position.x * this->size.x + this->size.x,
+            0,
+            this->position.y * this->size.y + this->size.y
+        };
+
+        if(position.x >= start_pos.x && position.x < end_pos.x &&
+            position.y < start_pos.y && position.y >= end_pos.y &&
+            position.z >= start_pos.z && position.z < end_pos.z)
+            return true;
+        return false;
+    }
+
     glm::vec2 Chunck::get_position(){
         return this->position;
     }
 
     BlockType Chunck::get_block(glm::vec3 position){
-        return this->all_blocks[get_index(position, this->size)];
+        if(this->is_mine(position))
+            return this->all_blocks[get_index(position, this->size)];
+        return BlockType::Nothing;
     }
 };

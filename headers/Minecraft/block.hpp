@@ -7,7 +7,7 @@
 
     namespace Minecraft{
         enum BlockType{
-            Air, Grass
+            Nothing, Air, Grass
         };
 
         struct BlockDrawableFace{
