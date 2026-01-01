@@ -7,8 +7,12 @@
         namespace Buffer{
             class Index{
                 public:
+                    Index();
                     Index(const unsigned int* data, const unsigned int index_number);
                     ~Index();
+
+                    void create();
+                    void set_data(const unsigned int* data, const unsigned int index_number);
 
                     unsigned int get_index_number() const;
 
@@ -17,6 +21,7 @@
                 private:
                     unsigned int id;
                     int index_number;
+                    bool is_created = false;
             };
         }
     }

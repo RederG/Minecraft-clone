@@ -8,10 +8,10 @@ namespace gl{
 
         Vertex::Vertex(const void* data, const int size){
             Tool_verify(glGenBuffers(1, &this->id));
+            this->is_created = true;
             this->bind();
             Tool_verify(glBufferData(GL_ARRAY_BUFFER, size, data, GL_DYNAMIC_DRAW));
             this->data_size = size;
-            this->is_created = true;
             if(gl::auto_binding())
                 this->unbind();
         }
@@ -372,10 +372,14 @@ namespace gl{
         }
 
         void Vertex::bind() const{
+            if(!this->is_created)
+                Tool::throw_opengl_error("The vertex buffer is not already created !!", "gl::Vertex::bind()");
             Tool_verify(glBindBuffer(GL_ARRAY_BUFFER, this->id));
         }
 
         void Vertex::unbind() const{
+            if(!this->is_created)
+                Tool::throw_opengl_error("The vertex buffer is not already created !!", "gl::Vertex::unbind()");
             Tool_verify(glBindBuffer(GL_ARRAY_BUFFER, 0));
         }
     

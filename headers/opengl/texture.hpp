@@ -22,6 +22,7 @@
                 Texture2D(Image2D& image);
                 Texture2D(Image2D* image);
                 ~Texture2D();
+                
                 Image2D* get_image();
                 void set(TextureParam::Type type, TextureParam::Options option);
 

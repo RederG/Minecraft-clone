@@ -7,8 +7,8 @@ namespace gl{
 
         VertexArray::VertexArray(gl::Buffer::Vertex* vertex_buffer, gl::Buffer::VertexLayout* layout){
             Tool_verify(glGenVertexArrays(1, &this->id));
-            this->configure_with(vertex_buffer, layout);
             this->is_created = true;
+            this->configure_with(vertex_buffer, layout);
         }
 
         VertexArray::~VertexArray(){
