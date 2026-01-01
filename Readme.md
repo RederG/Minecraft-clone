@@ -15,6 +15,6 @@ Commands :
 - Shift for going down and Space for going up
 - Ctrl for increasing movement speed
 
-With more information, this project was made on Windows so I don't know if it will work on anpther platform. Sorry for that
+With more information, this project was made on Windows so I don't know if it will work on another platform. Sorry for that
 
 ## ENJOY THE GAME !!!
