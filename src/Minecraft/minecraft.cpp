@@ -92,6 +92,9 @@ namespace Minecraft{
                 glfwSwapBuffers(window);
 
                 Tool::update_delta_time();
+
+                std::string title = "Minecraft, FPS : " + std::to_string(1 / Tool::delta_time);
+                glfwSetWindowTitle(window, title.c_str());
             }
         }
         else
