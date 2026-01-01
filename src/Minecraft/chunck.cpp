@@ -16,7 +16,7 @@ namespace Minecraft{
     }
 
     void Chunck::fill(){
-        for(int z = this->size.z; z > 0; z--){
+        for(int z = 0; z < this->size.z; z++){
             for(int y = 0; y < this->size.y; y++){
                 for(int x = 0; x < this->size.x; x++){
                     if(z <= this->size.z / 2)
