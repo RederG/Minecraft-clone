@@ -4,6 +4,8 @@
 #include "../../headers/Minecraft/textures.hpp"
 #include "../../headers/Minecraft/chunck.hpp"
 #include "../../headers/Minecraft/world.hpp"
+#include "../../headers/Minecraft/entity.hpp"
+#include "../../headers/Minecraft/player.hpp"
 
 const std::string MINECRAFT_APP_TIMER = "minecraft_app_timer";
 GLFWwindow* window = nullptr;
@@ -34,7 +36,7 @@ namespace Minecraft{
         else
             Tool::glfw_initialized = true;
 
-        window = glfwCreateWindow(window_size.x, window_size.y, "Minecraft", nullptr, nullptr);
+        window = glfwCreateWindow(window_size.x, window_size.y, "Minecraft, FPS : 0.0", nullptr, nullptr);
 
         if(!window)
             Tool::throw_error("Window not created");
@@ -53,6 +55,7 @@ namespace Minecraft{
         init_buffers();
         init_shaders();
         init_textures();
+        init_entities();
 
         Tool::log("All Minecraft's data loaded\n\tWe are ready to play");
     }
@@ -61,6 +64,7 @@ namespace Minecraft{
         terminate_shaders();
         terminate_textures();
         terminate_buffers();
+        terminate_entities();
 
         glfwTerminate();
 
@@ -68,14 +72,13 @@ namespace Minecraft{
         float duration = Tool::Timer::get_duration(MINECRAFT_APP_TIMER);
         float average_fps = Tool::get_average_fps();
         Tool::log("Application ended\n\tActivity time : " + std::to_string(duration) + " seconds");
-        std::cout << "\nAverage FPS : " << average_fps << "\n" << std::endl;
     }
 
     void play(){
         if(Tool::glad_initialized && Tool::glfw_initialized){
             World world(1, {8, 8, 255});
-            gl::Camera camera(45.0f, float(window_size.x / window_size.y), 0.1f, 100.0f);
-            
+            Player* player = new Player("Reder");
+
             world.update({2.0f, 2.0f, 10.0f});
 
             while(!glfwWindowShouldClose(window)){
@@ -84,17 +87,17 @@ namespace Minecraft{
                 gl::Renderer::clear(gl::Color(0.25f, 0.25f, 1.0f, 1.0f));
 
                 if(!is_minimized){
-                    camera.update(window, float(window_size.x / window_size.y));
-                    world.draw_to(window, camera.get_view());
+                    player->update(window);
+                    world.draw_to(window, player->get_camera()->get_view());
+                    
+                    std::string title = "Minecraft, FPS : " + std::to_string(1 / Tool::delta_time);
+                    glfwSetWindowTitle(window, title.c_str());
                 }
 
                 glfwPollEvents();
                 glfwSwapBuffers(window);
 
                 Tool::update_delta_time();
-
-                std::string title = "Minecraft, FPS : " + std::to_string(1 / Tool::delta_time);
-                glfwSetWindowTitle(window, title.c_str());
             }
         }
         else

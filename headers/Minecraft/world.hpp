@@ -6,6 +6,7 @@
 
     namespace Minecraft{
         class Chunck;
+        class Entity;
 
         class World{
             public:

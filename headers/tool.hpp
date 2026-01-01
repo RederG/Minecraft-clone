@@ -14,7 +14,7 @@
     #include <filesystem>
     #include <fstream>
     #include <thread>
-    #include <iostream>
+    #include <algorithm>
 
     #define Tool_verify(opengl_function){\
                 while(glGetError() != GL_NO_ERROR);;\

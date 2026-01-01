@@ -1,5 +1,6 @@
 #include "../../headers/Minecraft/world.hpp"
 #include "../../headers/Minecraft/chunck.hpp"
+#include "../../headers/Minecraft/entity.hpp"
 
 namespace Minecraft{
     World::World(int r_distance, glm::vec3 c_size)

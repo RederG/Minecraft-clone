@@ -7,8 +7,10 @@
 
         class Entity{
             public:
+                Entity();
                 Entity(std::string name);
-            private:
+                virtual void update(GLFWwindow* window);
+            protected:
                 std::string name;
                 glm::vec3 position;
                 long long id;
