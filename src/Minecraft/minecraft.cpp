@@ -8,6 +8,7 @@
 #include "../../headers/Minecraft/player.hpp"
 
 const std::string MINECRAFT_APP_TIMER = "minecraft_app_timer";
+const std::string MINECRAFT_FPS_VIEWER_TIMER = "minecraft_fps_viewer_timer";
 GLFWwindow* window = nullptr;
 glm::vec2 window_size = {1080, 720};
 bool is_minimized = false;
@@ -26,6 +27,9 @@ namespace Minecraft{
 
         Tool::Timer::create(MINECRAFT_APP_TIMER);
         Tool::Timer::start(MINECRAFT_APP_TIMER);
+
+        Tool::Timer::create(MINECRAFT_FPS_VIEWER_TIMER);
+        Tool::Timer::start(MINECRAFT_FPS_VIEWER_TIMER);
 
         glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
         glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
@@ -48,6 +52,8 @@ namespace Minecraft{
         else
             Tool::glad_initialized = true;
 
+        glfwSetFramebufferSizeCallback(window, update_window_size);
+
         Tool::update_delta_time();
         glViewport(0, 0, window_size.x, window_size.y);
         gl::set(gl::Options::Depth_testing, true);
@@ -69,6 +75,7 @@ namespace Minecraft{
         glfwTerminate();
 
         Tool::Timer::stop(MINECRAFT_APP_TIMER);
+        Tool::Timer::stop(MINECRAFT_FPS_VIEWER_TIMER);
         float duration = Tool::Timer::get_duration(MINECRAFT_APP_TIMER);
         Tool::log("Application ended\n\tActivity time : " + std::to_string(duration) + " seconds");
     }
@@ -81,7 +88,6 @@ namespace Minecraft{
             world.update({2.0f, 2.0f, 10.0f});
 
             while(!glfwWindowShouldClose(window)){
-                glfwSetFramebufferSizeCallback(window, update_window_size);
 
                 gl::Renderer::clear(gl::Color(0.25f, 0.25f, 1.0f, 1.0f));
 
@@ -89,8 +95,11 @@ namespace Minecraft{
                     player->update(window);
                     world.draw_to(window, player->get_camera()->get_view());
                     
-                    std::string title = "Minecraft, FPS : " + std::to_string(1 / Tool::delta_time);
-                    glfwSetWindowTitle(window, title.c_str());
+                    if(Tool::Timer::get_duration(MINECRAFT_FPS_VIEWER_TIMER) > 1.0f){
+                        std::string title = "Minecraft, FPS : " + std::to_string(1 / Tool::delta_time);
+                        glfwSetWindowTitle(window, title.c_str());
+                        Tool::Timer::restart(MINECRAFT_FPS_VIEWER_TIMER);
+                    }
                 }
 
                 glfwPollEvents();

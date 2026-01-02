@@ -45,6 +45,7 @@
             void create(std::string name);
             void start(std::string name);
             void stop(std::string name);
+            void restart(std::string name);
             float get_duration(std::string name);
             State get_state(std::string name);
             bool exists(std::string name);

@@ -141,6 +141,11 @@ namespace Tool{
                 throw_error("The timer \"" + name + "\" doesn't exists");
         }
 
+        void restart(std::string name){
+            stop(name);
+            start(name);
+        }
+
         float get_duration(std::string name){
             if(exists(name)){
                 State timer_state = all_states[name];
