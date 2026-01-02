@@ -70,7 +70,6 @@ namespace Minecraft{
 
         Tool::Timer::stop(MINECRAFT_APP_TIMER);
         float duration = Tool::Timer::get_duration(MINECRAFT_APP_TIMER);
-        float average_fps = Tool::get_average_fps();
         Tool::log("Application ended\n\tActivity time : " + std::to_string(duration) + " seconds");
     }
 
